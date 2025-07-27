@@ -169,3 +169,57 @@ class AdvancedQRCodeGenerator:
         for text, template in templates:
             ttk.Button(template_frame, text=text,
                        command=lambda t=template: self.insert_template(t)).pack(side='left', padx=2)
+
+    def create_style_section(self, parent):
+        """Section de personnalisation du style"""
+        section = tk.LabelFrame(parent, text="🎨 Style et Apparence",
+                                font=('Helvetica', 11, 'bold'),
+                                bg='white', fg='#2c3e50', padx=10, pady=5)
+        section.pack(fill='x', padx=10, pady=5)
+
+        # Taille et bordure
+        size_frame = tk.Frame(section, bg='white')
+        size_frame.pack(fill='x', pady=5)
+
+        tk.Label(size_frame, text="Taille:", bg='white').grid(row=0, column=0, sticky='w', padx=(0, 10))
+        ttk.Scale(size_frame, from_=5, to=25, variable=self.qr_size,
+                  orient='horizontal', length=120).grid(row=0, column=1, sticky='w')
+        tk.Label(size_frame, textvariable=self.qr_size, bg='white').grid(row=0, column=2, padx=(5, 0))
+
+        tk.Label(size_frame, text="Bordure:", bg='white').grid(row=1, column=0, sticky='w', padx=(0, 10))
+        ttk.Scale(size_frame, from_=0, to=10, variable=self.border_size,
+                  orient='horizontal', length=120).grid(row=1, column=1, sticky='w')
+        tk.Label(size_frame, textvariable=self.border_size, bg='white').grid(row=1, column=2, padx=(5, 0))
+
+        # Couleurs avec preview
+        color_frame = tk.Frame(section, bg='white')
+        color_frame.pack(fill='x', pady=10)
+
+        self.fg_color_btn = tk.Button(color_frame, text="QR Code", bg=self.fg_color, fg='white',
+                                      command=lambda: self.choose_color('fg'), width=12)
+        self.fg_color_btn.pack(side='left', padx=5)
+
+        self.bg_color_btn = tk.Button(color_frame, text="Arrière-plan", bg=self.bg_color, fg='black',
+                                      command=lambda: self.choose_color('bg'), width=12)
+        self.bg_color_btn.pack(side='left', padx=5)
+
+        # Formes des modules
+        shape_frame = tk.Frame(section, bg='white')
+        shape_frame.pack(fill='x', pady=5)
+        tk.Label(shape_frame, text="Forme des modules:", bg='white', font=('Helvetica', 10, 'bold')).pack(anchor='w')
+
+        shapes_container = tk.Frame(shape_frame, bg='white')
+        shapes_container.pack(fill='x')
+        shapes = [("■ Carré", "square"), ("● Rond", "circle"), ("★ Étoile", "star"), ("◆ Losange", "diamond")]
+        for text, value in shapes:
+            ttk.Radiobutton(shapes_container, text=text, value=value,
+                            variable=self.module_shape).pack(side='left', padx=10)
+
+        # Gradient
+        gradient_frame = tk.Frame(section, bg='white')
+        gradient_frame.pack(fill='x', pady=5)
+        ttk.Checkbutton(gradient_frame, text="Dégradé",
+                        variable=self.use_gradient).pack(side='left')
+        self.gradient_color_btn = tk.Button(gradient_frame, text="Couleur 2", bg=self.gradient_color,
+                                            command=lambda: self.choose_color('gradient'), width=10)
+        self.gradient_color_btn.pack(side='left', padx=10)
