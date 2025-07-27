@@ -44,3 +44,52 @@ class ScrollableFrame(tk.Frame):
 
         self.canvas.bind('<Enter>', _bind_to_mousewheel)
         self.canvas.bind('<Leave>', _unbind_from_mousewheel)
+
+class AdvancedQRCodeGenerator:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Générateur QR Code Avancé Pro")
+        self.root.geometry("1200x800")  # Légèrement plus large
+        self.root.configure(bg='#f0f0f0')
+
+        # Style moderne
+        self.setup_styles()
+
+        # Variables
+        self.text_var = tk.StringVar()
+        self.qr_size = tk.IntVar(value=10)
+        self.border_size = tk.IntVar(value=2)
+        self.logo_size = tk.IntVar(value=20)
+        self.fg_color = "#000000"
+        self.bg_color = "#FFFFFF"
+        self.gradient_color = "#0066cc"
+        self.use_gradient = tk.BooleanVar(value=False)
+        self.logo_path = None
+        self.module_shape = tk.StringVar(value="square")
+        self.error_correction = tk.StringVar(value="M")
+        self.data_type = tk.StringVar(value="text")
+        self.rotation_angle = tk.IntVar(value=0)
+        self.add_shadow = tk.BooleanVar(value=False)
+        self.pattern_style = tk.StringVar(value="standard")
+
+        # Historique
+        self.history = []
+
+        # Interface utilisateur
+        self.create_widgets()
+
+        # QR Image
+        self.qr_image = None
+
+    def setup_styles(self):
+        """Configure les styles modernes pour l'interface"""
+        style = ttk.Style()
+        style.theme_use('clam')
+
+        # Couleurs modernes
+        style.configure('Title.TLabel', font=('Helvetica', 16, 'bold'), foreground='#2c3e50')
+        style.configure('Subtitle.TLabel', font=('Helvetica', 11, 'bold'), foreground='#34495e')
+        style.configure('Modern.TButton', font=('Helvetica', 10, 'bold'))
+        style.configure('Success.TButton', background='#27ae60', foreground='white')
+        style.configure('Primary.TButton', background='#3498db', foreground='white')
+        style.configure('Warning.TButton', background='#f39c12', foreground='white')
