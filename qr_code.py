@@ -1,5 +1,6 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, colorchooser, filedialog, messagebox
+import numpy as np
 
 
 class ScrollableFrame(tk.Frame):
@@ -28,3 +29,18 @@ class ScrollableFrame(tk.Frame):
 
         # Binding pour la molette de souris
         self.bind_mousewheel()
+
+    def bind_mousewheel(self):
+        """Lie la molette de souris au scrolling"""
+
+        def _on_mousewheel(event):
+            self.canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
+        def _bind_to_mousewheel(event):
+            self.canvas.bind_all("<MouseWheel>", _on_mousewheel)
+
+        def _unbind_from_mousewheel(event):
+            self.canvas.unbind_all("<MouseWheel>")
+
+        self.canvas.bind('<Enter>', _bind_to_mousewheel)
+        self.canvas.bind('<Leave>', _unbind_from_mousewheel)
