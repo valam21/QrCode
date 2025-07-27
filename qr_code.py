@@ -126,3 +126,46 @@ class AdvancedQRCodeGenerator:
         self.create_advanced_section(left_frame)
         self.create_actions_section(left_frame)
         self.create_preview_section(right_frame)
+
+    def create_input_section(self, parent):
+        """Section de saisie des données"""
+        section = tk.LabelFrame(parent, text="📝 Contenu du QR Code",
+                                font=('Helvetica', 11, 'bold'),
+                                bg='white', fg='#2c3e50', padx=10, pady=5)
+        section.pack(fill='x', padx=10, pady=5)
+
+        # Type de données
+        tk.Label(section, text="Type de contenu:", bg='white', font=('Helvetica', 10, 'bold')).pack(anchor='w',
+                                                                                                    pady=(5, 0))
+        type_frame = tk.Frame(section, bg='white')
+        type_frame.pack(fill='x', pady=5)
+
+        types = [("Texte", "text"), ("URL", "url"), ("Email", "email"),
+                 ("Téléphone", "phone"), ("SMS", "sms"), ("WiFi", "wifi")]
+
+        for i, (text, value) in enumerate(types):
+            ttk.Radiobutton(type_frame, text=text, value=value,
+                            variable=self.data_type,
+                            command=self.on_type_change).grid(row=i // 3, column=i % 3, sticky='w', padx=5)
+
+        # Zone de texte avec scrollbar
+        tk.Label(section, text="Contenu:", bg='white', font=('Helvetica', 10, 'bold')).pack(anchor='w', pady=(10, 0))
+        text_frame = tk.Frame(section, bg='white')
+        text_frame.pack(fill='x', pady=5)
+
+        self.text_entry = tk.Text(text_frame, height=4, wrap='word', font=('Helvetica', 10))
+        scrollbar = ttk.Scrollbar(text_frame, orient='vertical', command=self.text_entry.yview)
+        self.text_entry.configure(yscrollcommand=scrollbar.set)
+
+        self.text_entry.pack(side='left', fill='both', expand=True)
+        scrollbar.pack(side='right', fill='y')
+
+        # Boutons de templates rapides
+        template_frame = tk.Frame(section, bg='white')
+        template_frame.pack(fill='x', pady=5)
+        tk.Label(template_frame, text="Templates rapides:", bg='white', font=('Helvetica', 9)).pack(anchor='w')
+
+        templates = [("Site Web", "https://"), ("Email", "mailto:"), ("Téléphone", "tel:")]
+        for text, template in templates:
+            ttk.Button(template_frame, text=text,
+                       command=lambda t=template: self.insert_template(t)).pack(side='left', padx=2)
