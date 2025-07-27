@@ -93,3 +93,36 @@ class AdvancedQRCodeGenerator:
         style.configure('Success.TButton', background='#27ae60', foreground='white')
         style.configure('Primary.TButton', background='#3498db', foreground='white')
         style.configure('Warning.TButton', background='#f39c12', foreground='white')
+
+    def create_widgets(self):
+        """Crée l'interface utilisateur moderne"""
+        # En-tête
+        header_frame = tk.Frame(self.root, bg='#2c3e50', height=60)
+        header_frame.pack(fill='x', pady=(0, 10))
+        header_frame.pack_propagate(False)
+
+        title_label = tk.Label(header_frame, text="🔲 Générateur QR Code Pro",
+                               font=('Helvetica', 18, 'bold'),
+                               fg='white', bg='#2c3e50')
+        title_label.pack(pady=15)
+
+        # Container principal avec deux colonnes
+        main_container = tk.Frame(self.root, bg='#f0f0f0')
+        main_container.pack(fill='both', expand=True, padx=10)
+
+        # Colonne gauche - Contrôles avec scrollbar
+        self.left_scrollable = ScrollableFrame(main_container)
+        self.left_scrollable.pack(side='left', fill='both', expand=True, padx=(0, 5))
+
+        # Colonne droite - Aperçu
+        right_frame = tk.Frame(main_container, bg='white', relief='raised', bd=1)
+        right_frame.pack(side='right', fill='both', expand=True, padx=(5, 0))
+
+        # Utiliser le frame scrollable pour les contrôles
+        left_frame = self.left_scrollable.scrollable_frame
+
+        self.create_input_section(left_frame)
+        self.create_style_section(left_frame)
+        self.create_advanced_section(left_frame)
+        self.create_actions_section(left_frame)
+        self.create_preview_section(right_frame)
